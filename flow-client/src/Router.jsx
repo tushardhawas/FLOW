@@ -3,8 +3,8 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import AuthLayout from "./pages/(auth)/layout";
-import Signoutpage from "./pages/(auth)/signout/index.js";
-import SignInPage from "./pages/(auth)/signin/index.jsx";
+import Signoutpage from "./pages/(auth)/signout";
+import SignInPage from "./pages/(auth)/signin";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         element: <SignInPage />, // Renders Login component
       },
       {
-        path: "signout", // Matches /signin/register
+        path: "signup", // Matches /signin/register
         element: <Signoutpage />, // Renders Register component
       },
     ],
