@@ -1,8 +1,16 @@
+import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/components/ass/authService";
 import { z } from "zod";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+
+//tryyy
+import { useNavigate } from "react-router";
+
 
 import {
   Form,
@@ -15,7 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -23,6 +31,9 @@ const formSchema = z.object({
 });
 
 const SignInPage = () => {
+//try
+  let navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,16 +42,31 @@ const SignInPage = () => {
     },
   });
 
+  // Using the form's submit handler to directly mutate with form data
   function onSubmit(values) {
     console.log("Form submitted:", values);
+    mutate(values); // Pass the form data directly to mutate
   }
-  console.log("inside signin.jsx");
+
+  const { mutate, isLoading, error, data } = useMutation({
+    mutationFn: login,  // The function to execute on mutation
+    onError: (error) => {
+      console.error("Login failed:", error);
+    },
+    onSuccess: (data) => {
+      console.log("Login successful:", data);
+      navigate("/");
+
+      
+          },
+  });
+  
 
   return (
     <>
-      <Card className="w-full h-full  md:w-[487px] border-none shadow-none">
+      <Card className="w-full h-full md:w-[487px] border-none shadow-none">
         <CardHeader className="flex items-center justify-center text-center p-7">
-          <CardTitle className=" text-2xl">Welcome Back!</CardTitle>
+          <CardTitle className="text-2xl">Welcome Back!</CardTitle>
         </CardHeader>
         <div className="px-7 mb-2">
           <Separator />
@@ -81,8 +107,8 @@ const SignInPage = () => {
                 )}
               />
 
-              <Button disabled={false} size="lg" className="w-full">
-                Login
+              <Button disabled={isLoading} size="lg" className="w-full">
+                {isLoading ? "Logging In..." : "Login"}
               </Button>
             </form>
           </Form>
@@ -111,13 +137,14 @@ const SignInPage = () => {
           </Button>
         </CardContent>
         <div className="px-7">
-          <Separator/>
+          <Separator />
         </div>
         <CardContent className="p-7 flex items-center justify-center">
           Don&apos;t have an account?{""}
-          <Link to="/auth/signup"><span className="text-blue-700">&nbsp;Sign-up</span> </Link>
+          <Link to="/auth/signup">
+            <span className="text-blue-700">&nbsp;Sign-up</span>
+          </Link>
         </CardContent>
-       
       </Card>
     </>
   );
