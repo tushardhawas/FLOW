@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "@/components/ass/authService";
+import { login } from "@/server/authService";
 import { z } from "zod";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -107,8 +107,8 @@ const SignInPage = () => {
                 )}
               />
 
-              <Button disabled={isLoading} size="lg" className="w-full">
-                {isLoading ? "Logging In..." : "Login"}
+              <Button disabled={false} size="lg" className="w-full">
+                 Login
               </Button>
             </form>
           </Form>

@@ -1,12 +1,28 @@
 // backend/controllers/authController.js
-export const loginController = (req, res) => {
-    const { email, password } = req.body;
-  
-    // Example: Check if user credentials are valid (Replace with actual logic)
-    if (email === "test@example.com" && password === "password123") {
-      return res.json({ success: true, message: "Login successful!" });
-    }
-  
-    return res.status(401).json({ success: false, message: "Invalid credentials!" });
-  };
-  
+import { account } from "../appwrite.js";
+
+export const loginController = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Login user by creating session
+    await account.createEmailPasswordSession(email, password);
+    return res.json({ success: true, message: "Login successful!" });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(400).send('Login failed');
+  }
+ 
+};
+export const signupController = async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    await account.create( name, email, password);
+    await account.createEmailPasswordSession(email, password);
+    res.status(200).send("User registered and logged in");
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(400).send("Registration failed");
+  }
+};

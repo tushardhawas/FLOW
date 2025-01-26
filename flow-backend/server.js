@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import loginRoutes from "./routes/login.js";  // Import login routes
+import signupRoutes from "./routes/signup.js"
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json()); // For parsing JSON request bodies
 
 // Use the login routes
 app.use("/api", loginRoutes);
+app.use("/api", signupRoutes );
 
 // Start the server
 const PORT = process.env.PORT || 5000;

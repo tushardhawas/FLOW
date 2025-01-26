@@ -11,11 +11,19 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Card, CardContent,CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { signup } from "@/server/authService";
 
 const formSchema = z.object({
   name: z.string().min(1, "Required"),
@@ -27,7 +35,7 @@ const Signoutpage = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name:"",
+      name: "",
       email: "",
       password: "",
     },
@@ -35,7 +43,18 @@ const Signoutpage = () => {
 
   function onSubmit(values) {
     console.log("Form submitted:", values);
+    mutate(values);
   }
+
+  const { mutate, error,isSuccess  } = useMutation({
+    mutationFn: signup,
+    onError: () => {
+      console.error("Sign up failed:", error);
+    },
+    isSuccess: (data) => {
+      console.log("Sign up successful:", data);
+    },
+  });
 
   console.log("inside signout.jsx");
 
@@ -67,11 +86,7 @@ const Signoutpage = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        placeholder="Enter Name"
-                      />
+                      <Input {...field} type="text" placeholder="Enter Name" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -139,11 +154,13 @@ const Signoutpage = () => {
           </Button>
         </CardContent>
         <div className="px-7">
-          <Separator/>
+          <Separator />
         </div>
         <CardContent className="p-7 flex items-center justify-center">
           Already have an account?
-          <Link to="/auth/signin"><span className="text-blue-700">&nbsp;Sign-in</span> </Link>
+          <Link to="/auth/signin">
+            <span className="text-blue-700">&nbsp;Sign-in</span>{" "}
+          </Link>
         </CardContent>
       </Card>
     </>
