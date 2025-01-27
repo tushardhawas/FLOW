@@ -2,19 +2,24 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import loginRoutes from "./routes/login.js";  // Import login routes
-import signupRoutes from "./routes/signup.js"
+import authRoutes from "./routes/authRoutes.js"; // Import login routes
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
 app.use(express.json()); // For parsing JSON request bodies
+app.use(cookieParser());
 
 // Use the login routes
-app.use("/api", loginRoutes);
-app.use("/api", signupRoutes );
+app.use("/api", authRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

@@ -4,6 +4,7 @@ import { FaGithub } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useNavigate } from "react-router";
 import {
   Form,
   FormControl,
@@ -32,6 +33,10 @@ const formSchema = z.object({
 });
 
 const Signoutpage = () => {
+  
+  let navigate = useNavigate();
+
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,18 +46,20 @@ const Signoutpage = () => {
     },
   });
 
+
   function onSubmit(values) {
     console.log("Form submitted:", values);
     mutate(values);
   }
 
-  const { mutate, error,isSuccess  } = useMutation({
+  const { mutate, error  } = useMutation({
     mutationFn: signup,
     onError: () => {
       console.error("Sign up failed:", error);
     },
-    isSuccess: (data) => {
+    onSuccess: (data) => {
       console.log("Sign up successful:", data);
+        navigate("/");
     },
   });
 

@@ -1,13 +1,18 @@
-import { Client, Databases, Account } from "appwrite";
+// appwrite.js
+import { Client, Account, Users, Storage, Databases } from "node-appwrite";
 import dotenv from "dotenv";
 
-
 dotenv.config();
-console.log(process.env.APPRIGHT_ENDPOINT);
-// Initialize Appwrite Client
-const client = new Client();
 
-client.setEndpoint(process.env.APPRIGHT_ENDPOINT).setProject( process.env.APPRIGHT_PROJECT);
+export async function createAdminClient() {
+  const client = new Client()
+    .setEndpoint(process.env.APPRIGHT_ENDPOINT)
+    .setProject(process.env.APPRIGHT_PROJECT)
+    .setKey(process.env.APPRIGHT_KEY);
 
-export const account = new Account(client);
-export const databases = new Databases(client);
+  return {
+    get account() {
+      return new Account(client);
+    },
+  };
+}

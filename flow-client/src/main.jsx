@@ -5,11 +5,11 @@ import AppRouter from "./Router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./queryClient";
 import "./index.css";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <QueryClientProvider client={queryClient}>
-   
     <AppRouter />
   </QueryClientProvider>
 );
