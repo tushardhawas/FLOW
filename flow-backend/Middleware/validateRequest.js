@@ -1,4 +1,6 @@
+
 export const validateRequest = (schema) => (req, res, next) => {
+
     try {
       schema.parse(req.body);
       next();
@@ -6,4 +8,4 @@ export const validateRequest = (schema) => (req, res, next) => {
       return res.status(400).json({ success: false, message: error.errors[0].message });
     }
   };
-  
+   

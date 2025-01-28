@@ -41,3 +41,26 @@ export const registerController = async (req, res) => {
     message: "User registered and logged in successfully.",
   });
 };
+
+export const logoutController = async (req, res) => {
+  // Access the account object from the request (set in sessionMiddleware)
+  const account = req.account;
+
+  try {
+    // Remove the session cookie by setting it with an expired date
+    res.cookie("sessionId", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: new Date(0),  // Expire the cookie immediately
+      sameSite: "Strict",
+    });
+
+    // Delete the current session from Appwrite
+    await account.deleteSession("current");
+
+    return res.json({ success: true, message: "Logout successful!" });
+  } catch (error) {
+    console.error("Logout error:", error.message);
+    return res.status(500).json({ success: false, message: "Logout failed." });
+  }
+};

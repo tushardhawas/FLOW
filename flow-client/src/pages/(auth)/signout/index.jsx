@@ -52,7 +52,7 @@ const Signoutpage = () => {
     mutate(values);
   }
 
-  const { mutate, error  } = useMutation({
+  const { mutate, error,isLoading  } = useMutation({
     mutationFn: signup,
     onError: () => {
       console.error("Sign up failed:", error);
@@ -131,7 +131,7 @@ const Signoutpage = () => {
                   </FormItem>
                 )}
               />
-              <Button disabled={false} size="lg" className="w-full">
+              <Button disabled={isLoading}  size="lg" className="w-full">
                 Login
               </Button>
             </form>
