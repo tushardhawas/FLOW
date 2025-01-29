@@ -53,17 +53,28 @@ export const fetchCurrentUser = async () => {
       credentials: "include", // Ensures cookies are sent
     });
 
+    console.log("inside fetchcurrent");
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to fetch user");
+      // Handle different error types
+      if (response.status === 401) {
+        console.warn("User not authenticated");
+        return null; // Not logged in, return null
+      } else {
+        throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+      }
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log(data)
+    return data;
   } catch (error) {
-    // Handle both fetch errors and server-specific errors
-    if (error.name === "TypeError" || error.message === "Failed to fetch") {
-      throw new Error("Server down");
+    // Handle fetch/network errors
+    if (error.name === "TypeError" || error.message.includes("Failed to fetch")) {
+      throw new Error("Server is down or unreachable");
     }
-    throw new Error(error.message || "An unknown error occurred");
+    
+    console.error("Error fetching user:", error.message);
+    throw error; // Let React Query handle retries if needed
   }
 };
