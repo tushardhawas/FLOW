@@ -55,7 +55,7 @@ const SignInPage = () => {
     },
     onSuccess: (data) => {
       console.log("Login successful:", data);
-      navigate("/");
+      navigate("/dashboard");
 
     
           },

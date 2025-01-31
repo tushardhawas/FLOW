@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js"; // Import login routes
 import cookieParser from "cookie-parser";
+import workspacesRoutes from "./routes/workspacesRoutes.js"
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 // Use the login routes
 app.use("/api", authRoutes);
+app.use("/workspaces", workspacesRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
